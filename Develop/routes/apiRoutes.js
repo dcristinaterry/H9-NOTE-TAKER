@@ -47,20 +47,22 @@ module.exports = function (app) {
     // CREATE
     // ===============================================================
 
-    // app.post("/api/notes", function (req, resp) {
-    //     let notes = req.body;
+    app.post("/api/notes", function (req, resp) {
+        let notes = req.body;
 
-    //     getData(function(data){
-    //         let arrayofData = data;
-    //         console.log(arrayofData);
-    //         arrayofData.push(notes);
-    //         fs.writeSync(dbPath, arrayofData, function(err, data){
-    //             if(err) throw err;
-    //         });
-    //     })
-    //     console.log("some notes", notes);
-    //     // add to the db/ db.json
-    // })
+        getData(function(data){
+
+            let arrayofData = data;
+            arrayofData.push(notes);
+
+            let jsonString = JSON.stringify(arrayofData);
+            fs.writeFileSync(dbPath, jsonString, function(err, data){
+                if(err) throw err;
+                console.log("wrote to db")
+            });
+
+        })
+    })
 
 
     // app.delete("api/notes/:id", function (req, res) {
