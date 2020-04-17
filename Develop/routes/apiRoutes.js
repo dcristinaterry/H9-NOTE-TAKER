@@ -33,6 +33,13 @@ module.exports = function (app) {
 
     }
 
+    function writeData(jsonString){
+        fs.writeFileSync(dbPath, jsonString, function(err, data){
+            if(err) throw err;
+            console.log("wrote to db");
+        });
+    }
+
     app.get("/api/notes", function (req, res) {
 
         getData(function (data) {
@@ -56,10 +63,12 @@ module.exports = function (app) {
             arrayofData.push(notes);
 
             let jsonString = JSON.stringify(arrayofData);
-            fs.writeFileSync(dbPath, jsonString, function(err, data){
-                if(err) throw err;
-                console.log("wrote to db")
-            });
+
+            writeData(arrayofData);
+            // fs.writeFileSync(dbPath, jsonString, function(err, data){
+            //     if(err) throw err;
+            //     console.log("wrote to db");
+            // });
 
         })
     })
