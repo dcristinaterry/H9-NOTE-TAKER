@@ -10,6 +10,7 @@ app.get("/", function(req, resp){
 app.get("/notes", function(req, res){
 // go to notes
     res.sendFile(path.join(__dirname, "../public/notes.html"));
+    
 
 })
 }
