@@ -3,113 +3,93 @@
 // ==================================================================
 let fs = require("fs");
 let path = require("path");
-// let notes = require("../db/db2.json");
-
-
-
-
 
 // ==================================================================
 // CREATE - READ - DELETE 
 // ==================================================================
 
 
-
 module.exports = function (app) {
+
+
+    // ===============================================================
+    //  read - write access db
+    // ===============================================================
+
+
     var dbpath = path.join(__dirname, "../db/db2.json").toString();
-    
-    // ===============================================================
-    //  READ 
-    // ===============================================================
 
     function getData(cb) {
 
-        // console.log("1.inside getdata")
+        console.log("1.Reading Data")
 
         fs.readFile(dbpath, function (error, data) {
             if (error) throw error;
             // console.log("getting raw data")
-
             let txt = JSON.parse(data);
             // console.log(txt);
-
             cb(txt);
         })
 
     }
 
+    function writeDB(res, jsonString) {
+        console.log("2. writting do db")
+        fs.writeFileSync(dbpath, jsonString, function (err, data) {
+            if (err) throw err;
+            console.log("Writting  to db");
+
+        });
+        res.json(jsonString);
+    }
+
+    // ===============================================================
+    //  READ-REQUEST
+    // ===============================================================
+
     app.get("/api/notes", function (req, res) {
 
         getData(function (data) {
-            // console.log("2. I'm the callback");
-            // console.log(data);
             res.json(data);
         });
 
     })
 
     // ===============================================================
-    // CREATE
+    // CREATE-REQUEST
     // ===============================================================
-
-    function writeDB() {
-        fs.writeFileSync(dbpath, jsonString, function (err, data) {
-            if (err) throw err;
-            console.log("wrote to db");
-
-        });
-    }
-
-
-
-
 
     app.post("/api/notes", function (req, res) {
         let notes = req.body;
 
-
+        // get data from db
         getData(function (data) {
 
-            let arrayofData = data;
-            arrayofData.push(notes);
+            //pushed new object to data array
+            data.push(notes);
+            let jsonString = JSON.stringify(data);
 
-            let jsonString = JSON.stringify(arrayofData);
-
-            // writeData(arrayofData);
-
-            writeDB().then(function(){
-                res.json(jsonString);
-            })
-
-            // fs.writeFileSync(dbPath2, jsonString, function (err, data) {
-            //     if (err) throw err;
-            //     console.log("wrote to db");
-
-            // });
-           
+            // write to db
+            writeDB(res, jsonString);
         })
     })
 
+    // ===============================================================
+    // DELETE-REQUEST
+    // ===============================================================
 
     app.delete("/api/notes/:id", function (req, res) {
-        // console.log(req)
+     
         let myId = req.params.id;
-        console.log(myId);
-
+ 
         getData(function (data) {
 
-            let arrayofData = data;
-            arrayofData.splice(myId, 1);
+            // delete data
+            data.splice(myId, 1);
+            let jsonString = JSON.stringify(data);
+            // write to db
+            writeDB(res, jsonString);
 
-            let jsonString = JSON.stringify(arrayofData);
-
-            // writeData(arrayofData);
-            fs.writeFileSync(dbpath, jsonString, function (err, data) {
-                if (err) throw err;
-                console.log("deleted element db");
-
-            });
-            res.json(jsonString);
         });
 
     });
