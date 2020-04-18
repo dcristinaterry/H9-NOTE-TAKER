@@ -1,76 +1,86 @@
-# Unit 11 Express Homework: Note Taker
+# H9-NOTE-TAKER
 
-## Description
+This application will allow you to take  your own notes, save them and delete them.  This application will use an express backend and save and retrieve note data from a JSON file.
 
-Create an application that can be used to write, save, and delete notes. This application will use an express backend and save and retrieve note data from a JSON file.
+## GettingStarted
 
-* The application frontend has already been created, it's your job to build the backend and connect the two.
+Project Location
 
-* The following HTML routes should be created:
+>[Project's GitHub repository](https://github.com/crisdc88/H9-NOTE-TAKER)
 
-  * GET `/notes` - Should return the `notes.html` file.
+## Built With
 
-  * GET `*` - Should return the `index.html` file
+* Node js
+* HTML
+* JavaScript
+* Node Js
+* Express
 
-* The application should have a `db.json` file on the backend that will be used to store and retrieve notes using the `fs` module.
+## Deployed Link
 
-* The following API routes should be created:
+>[DeployedLink](https://ct-notetaker.herokuapp.com/)
 
-  * GET `/api/notes` - Should read the `db.json` file and return all saved notes as JSON.
+## Installation
 
-  * POST `/api/notes` - Should recieve a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client.
+ To run this application on your local machine follow these steps:
 
-  * DELETE `/api/notes/:id` - Should recieve a query paramter containing the id of a note to delete. This means you'll need to find a way to give each note a unique `id` when it's saved. In order to delete a note, you'll need to read all notes from the `db.json` file, remove the note with the given `id` property, and then rewrite the notes to the `db.json` file.
+1. Clone project from github.
+2. On the terminal go to the project's path
+3. run npm install
+4. run node server.js
+5. Open your browser and go to localhost:8080/
 
-## User Story
+## Code-Snippets
 
-AS A user, I want to be able to write and save notes
+Code sample.  This is a request call to read data from data base, making use of callback functions. 
 
-I WANT to be able to delete notes I've written before
+```sh
+ function getData(cb) {
 
-SO THAT I can organize my thoughts and keep track of tasks I need to complete
+        console.log("1.Reading Data")
 
-## Business Context
+        fs.readFile(dbpath, function (error, data) {
+            if (error) throw error;
+            // console.log("getting raw data")
+            let txt = JSON.parse(data);
+            // console.log(txt);
+            cb(txt);
+        })
 
-For users that need to keep track of a lot of information, it's easy to forget or be unable to recall something important. Being able to take persistent notes allows users to have written information available when needed.
+    }
 
-## Acceptance Criteria
+ app.get("/api/notes", function (req, res) {
 
-Application should allow users to create and save notes.
+        getData(function (data) {
+            res.json(data);
+        });
 
-Application should allow users to view previously saved notes.
+    })
+```
 
-Application should allow users to delete previously saved notes.
+## Screen shots
 
-- - -
+1. Console Input
+![consoleInput](./screenShots/index.png)
 
-## Commit Early and Often
+2. HTML generated
 
-One of the most important skills to master as a web developer is version control. Building the habit of committing via Git is important for two reasons:
+![htmlGenerated](./screenShots/notes.png)
 
-* Your commit history is a signal to employers that you are actively working on projects and learning new skills.
+3. GIF
 
-* Your commit history allows you to revert your codebase in the event that you need to return to a previous state.
+![gif](./screenShots/noteTaker.gif)
 
-Follow these guidelines for committing:
+## Author
 
-* Make single-purpose commits for related changes to ensure a clean, manageable history. If you are fixing two issues, make two commits.
+<img src="https://avatars.githubusercontent.com/u/61372364?" alt="avatar" style="border-radius:20px" width="30"/>
 
-* Write descriptive, meaningful commit messages so that you and anyone else looking at your repository can easily understand its history.
+D. Cristina Terry
 
-* Don't commit half-done work, for the sake of your collaborators (and your future self!).
+GitHub: [https://github.com/crisdc88/](https://github.com/crisdc88/)
 
-* Test your application before you commit to ensure functionality at every step in the development process.
+LinkedIn: [www.linkedin.com/in/dcristinaterry](www.linkedin.com/in/dcristinaterry)
 
-We would like you to have well over 200 commits by graduation, so commit early and often!
+## License
 
-## Submission on BCS
-
-You are required to submit the following:
-
-* The URL of the deployed application
-
-* The URL of the GitHub repository
-
-- - -
-© 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.
+![license](https://img.shields.io/badge/license-MIT-green)

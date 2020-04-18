@@ -19,6 +19,7 @@ module.exports = function (app) {
 
     var dbpath = path.join(__dirname, "../db/db2.json").toString();
 
+
     function getData(cb) {
 
         console.log("1.Reading Data")
@@ -49,6 +50,7 @@ module.exports = function (app) {
 
     app.get("/api/notes", function (req, res) {
 
+    
         getData(function (data) {
             res.json(data);
         });
